@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import AuthServerButton from "@/components/auth/AuthServerButton";
 
 export default function Header() {
   // const [isOpen, setIsOpen] = useState(false);
@@ -11,9 +12,9 @@ export default function Header() {
       <Link href="/pricing">
         <Button>Pricing</Button>
       </Link>
-      <Link href="/login" className="ml-auto">
-        <Button>Login</Button>
-      </Link>
+      <div className="ml-auto">
+        <AuthServerButton/>
+      </div>
     </header>
   );
 }
