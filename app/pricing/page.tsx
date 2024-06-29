@@ -7,6 +7,7 @@ import { cookies } from 'next/headers'
 import { Database, Tables } from '@/lib/database.types'
 import { SupabaseClient } from '@supabase/supabase-js'
 import SubscriptionButton from '@/components/checkout/SubscriptionButton'
+import AuthServerButton from '@/components/auth/AuthServerButton'
 
 const getAllPlans = async () => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -69,7 +70,7 @@ const PricingPage = async () => {
             </CardContent>
             <CardFooter>
               {showSubscription && <SubscriptionButton planId={plan.id} />}
-              {showCreateAccountButton && <Button>create account</Button>}
+              {showCreateAccountButton && <AuthServerButton />}
               {showManageSubscriptionButton && <Button>manage subscription</Button>}
             </CardFooter>
           </Card>
