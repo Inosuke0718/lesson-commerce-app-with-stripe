@@ -12,16 +12,23 @@ export async function POST(req: NextRequest) {
 
   const supabase = createRouteHandlerClient({ cookies });
   const data = await req.json();
-  const { id, email } = data;
+  const { id, email } = data.record;
+  // const { id, email } = data;
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   const customer = await stripe.customers.create({
     email,
   });
 
+  // for debug
+  // console.log("customer:", customer);
+  // console.log("id:", id);
+
   await supabase.from("profile").update({
     stripe_customer: customer.id,
   }).eq("id", id);
+
+
   // const userResponse = await supabase.auth.getUser();
   // await supabase.from("profile").update({
   //   stripe_customer_id: customer.id,
