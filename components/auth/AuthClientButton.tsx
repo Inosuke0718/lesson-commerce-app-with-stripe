@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Session } from "@supabase/auth-helpers-nextjs";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
+// import { fetch } from 'next/navigation'; // Added this line
 
 const AuthClientButton = ({ session }: { session: Session | null }) => {
   const router = useRouter();
@@ -23,9 +24,28 @@ const AuthClientButton = ({ session }: { session: Session | null }) => {
     router.refresh();
   };
 
+  const handleCreateStripeCustomer = async () => {
+    const response = await fetch('/api/create-stripe-customer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: "0024965e-78a5-4994-8650-eb6cc92dc56a", email:  "test@gmail.com", }),
+    });
+    const result = await response.json();
+    alert(`Stripe Customer Status: ${result.message}`);
+  };
+
   return (
     <>
-      {session ? <Button onClick={handleSingOut}>Logout</Button> : <Button onClick={handleSingIn}>Sign In</Button>}
+      {session ? (
+        <>
+          <Button onClick={handleSingOut}>Logout</Button>
+          <Button onClick={handleCreateStripeCustomer}>Create Stripe Customer</Button>
+        </>
+      ) : (
+        <Button onClick={handleSingIn}>Sign In</Button>
+      )}
     </>
   );
 };

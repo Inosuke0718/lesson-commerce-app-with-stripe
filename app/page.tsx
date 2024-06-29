@@ -35,8 +35,10 @@ export default async function Home() {
               </CardContent>
             </Card>
           </Link>
+          
         ))}
       </div>
     </main>
   );
 }
+
