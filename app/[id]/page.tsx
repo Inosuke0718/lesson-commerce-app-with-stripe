@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database, Tables } from "@/lib/database.types";
+import { Database, Tables } from "@/types/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { YouTubeEmbed } from '@next/third-parties/google'
 import { extractYouTubeVideoId } from "@/app/utils/extractYoutubeVideoId";

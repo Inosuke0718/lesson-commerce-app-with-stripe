@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button'
 import Stripe from 'stripe'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { Database, Tables } from '@/lib/database.types'
+import { Database, Tables } from '@/types/supabase'
 import { SupabaseClient } from '@supabase/supabase-js'
 import SubscriptionButton from '@/components/checkout/SubscriptionButton'
 import AuthServerButton from '@/components/auth/AuthServerButton'
+import Link from 'next/link'
 
 const getAllPlans = async () => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -28,7 +29,7 @@ const getAllPlans = async () => {
   return sortedPlans;
 }
 
-const getDetailLesson = async (supabase: SupabaseClient<Database>): Promise<Tables<'profile'>> => {
+const getProfile = async (supabase: SupabaseClient<Database>): Promise<Tables<'profile'>> => {
   const authUser = await supabase.auth.getUser();
   const { data: profile } =
     await
@@ -46,7 +47,7 @@ const PricingPage = async () => {
   const { data: authSession } = await supabase.auth.getSession();
 
   const [profile, plans] = await Promise.all([
-    getDetailLesson(supabase),
+    getProfile(supabase),
     getAllPlans()
   ])
 
@@ -71,7 +72,7 @@ const PricingPage = async () => {
             <CardFooter>
               {showSubscription && <SubscriptionButton planId={plan.id} />}
               {showCreateAccountButton && <AuthServerButton />}
-              {showManageSubscriptionButton && <Button>manage subscription</Button>}
+              {showManageSubscriptionButton && <Button ><Link href='/dashboard'>manage subscription</Link></Button>}
             </CardFooter>
           </Card>
         ))}

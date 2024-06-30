@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Database, Tables } from "@/lib/database.types";
+import { Database, Tables } from "@/types/supabase";
 
 const supabase = createServerComponentClient<Database>({ cookies });
 
@@ -35,7 +35,7 @@ export default async function Home() {
               </CardContent>
             </Card>
           </Link>
-          
+
         ))}
       </div>
     </main>
