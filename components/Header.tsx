@@ -1,14 +1,24 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import AuthServerButton from "@/components/auth/AuthServerButton";
+import { cookies } from 'next/headers'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 
-export default function Header() {
+export default async function Header() {
+  const supabase = createServerComponentClient({ cookies });
+
+  const { data: user } = await supabase.auth.getSession();
   // const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="flex justify-between gap-3 items-center p-4 border-gray-200">
       <Link href="/">
         <Button variant="outline">Home</Button>
       </Link>
+      {user.session && (
+        <Link href="/dashboard">
+          <Button>Dashboard</Button>
+        </Link>
+      )}
       <Link href="/pricing">
         <Button>Pricing</Button>
       </Link>

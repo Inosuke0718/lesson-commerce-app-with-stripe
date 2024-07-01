@@ -11,9 +11,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const signature = req.headers.get("stripe-signature");
   // Convert the request body to a buffer 
   const reqBuffer = Buffer.from(await req.arrayBuffer());
-  
-
-
 
   let event;
 
@@ -29,16 +26,26 @@ export async function POST(req: NextRequest, res: NextResponse) {
           interval: customerSubscriptionCreated.items.data[0].plan.interval,
           stripe_customer: customerSubscriptionCreated.customer
         }).eq('stripe_customer', customerSubscriptionCreated.customer)
-        // Then define and call a function to handle the event customer.subscription.created
         break;
+
+      case 'customer.subscription.updated':
+        if (event.data.object.status !== 'canceled') {
+          const customerSubscriptionUpdated = event.data.object;
+          await supabase.from('profile').update({
+            is_subscribed: true,
+            interval: customerSubscriptionUpdated.items.data[0].plan.interval,
+          }).eq('stripe_customer', customerSubscriptionUpdated.customer)
+        }
+        break;
+
       case 'customer.subscription.deleted':
         const customerSubscriptionDeleted = event.data.object;
-        // Then define and call a function to handle the event customer.subscription.deleted
+        await supabase.from('profile').update({
+          is_subscribed: false,
+          interval: null,
+        }).eq('stripe_customer', customerSubscriptionDeleted.customer)
         break;
-      case 'customer.subscription.updated':
-        const customerSubscriptionUpdated = event.data.object;
-        // Then define and call a function to handle the event customer.subscription.updated
-        break;
+
       // ... handle other event types
       default:
         console.log(`Unhandled event type ${event.type}`);
