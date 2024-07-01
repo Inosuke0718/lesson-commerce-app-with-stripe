@@ -7,14 +7,14 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 export default async function Header() {
   const supabase = createServerComponentClient({ cookies });
 
-  const { data: user } = await supabase.auth.getSession();
+  const { data: user } = await supabase.auth.getUser();
   // const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="flex justify-between gap-3 items-center p-4 border-gray-200">
       <Link href="/">
         <Button variant="outline">Home</Button>
       </Link>
-      {user.session && (
+      {user.user && (
         <Link href="/dashboard">
           <Button>Dashboard</Button>
         </Link>

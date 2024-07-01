@@ -44,16 +44,16 @@ const getProfile = async (supabase: SupabaseClient<Database>): Promise<Tables<'p
 const PricingPage = async () => {
   const supabase = createServerComponentClient({ cookies });
 
-  const { data: authSession } = await supabase.auth.getSession();
+  const authUser = await supabase.auth.getUser();
 
   const [profile, plans] = await Promise.all([
     getProfile(supabase),
     getAllPlans()
   ])
 
-  const showSubscription = !!authSession.session && !profile.is_subscribed;
-  const showCreateAccountButton = !authSession.session;
-  const showManageSubscriptionButton = !!authSession.session && profile.is_subscribed;
+  const showSubscription = !!authUser.data.user && !profile.is_subscribed;
+  const showCreateAccountButton = !authUser.data.user;
+  const showManageSubscriptionButton = !!authUser.data.user && profile.is_subscribed;
 
   return (
     <>
@@ -81,4 +81,4 @@ const PricingPage = async () => {
   )
 }
 
-export default PricingPage
+export default PricingPage;
