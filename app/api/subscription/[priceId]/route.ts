@@ -21,8 +21,8 @@ export async function GET(req: NextRequest, { params }: { params: { priceId: str
 
 
   const session = await stripe.checkout.sessions.create({
-    success_url: 'http://localhost:3000/payment/success',
-    cancel_url: 'http://localhost:3000/payment/cancel',
+    success_url: `${process.env.NEXT_PUBLIC_DOMAIN}/payment/success`,
+    cancel_url: `${process.env.NEXT_PUBLIC_DOMAIN}/payment/cancel`,
     line_items: [
       {
         price: params.priceId,

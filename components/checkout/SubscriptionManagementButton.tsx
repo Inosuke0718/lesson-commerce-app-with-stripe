@@ -9,8 +9,8 @@ function SubscriptionManagementButton() {
   const router = useRouter();
   const loadPortal = async () => {
     // debugger
-    const response = await axios.get('http://localhost:3000/api/portal/');
-    // const response2 = await axios.get(process.env.NEXT_PUBLIC_DOMEIN);
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/portal/`);
+    // const response2 = await axios.get(process.env.NEXT_PUBLIC_DOMAIN);
     const data = await response.data;
 
     router.push(data.url);
